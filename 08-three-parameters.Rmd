@@ -1,10 +1,6 @@
 # Three Parameters {#three-parameters}
 
 
-<!-- Do tutorials for chapter 4 and for chapter 8. Done. -->
-
-<!-- Read chapter 11 for one take on the Cardinal Virtue approach. -->
-
 <!-- Do Wisdom and Justice at the top. -->
 
 <!-- DK: Where is the best place to modify income and discuss it? -->
@@ -15,6 +11,54 @@
 Models have parameters. In Chapter \@ref(one-parameter) we created models with a single parameter $p$, the proportion of red beads in an urn. In Chapter \@ref(two-parameters), we used models with two parameters: $\mu$ (the average height in the population, generically known as a model "intercept") and $\sigma$ (the variation in height in the population). Here --- can you guess where this is going? --- we will build models with three parameters: $\sigma$ (which serves the same role throughout the book) and two coefficients. In models which relate a continuous predictor to the outcome, those two parameters will be labeled $\beta_0$ and $\beta_1$. In models which estimate two averages, the parameters will be $\beta_1$ and $\beta_2$. All this notation is confusing, not least because different academic fields use inconsistent schemes. Follow the Cardinal Virtues and tackle your problem step by step.
 
 <!-- DK: More detail? -->
+## Wisdom
+
+Wisdom begins with considering the questions we desire to answer and the data set we are given.
+
+### The Questions
+
+*What is the expected age of a Democrat at the train station?*
+
+*In a group of three Democrats and three Republicans, what will the age difference be between the oldest Democrat and the youngest Republican?* 
+
+*What is the average treatment effect, of exposing people to Spanish-speakers, on their attitudes toward immigration?* 
+
+*What is the largest causal effect which still has a 1 in 10 chance of occurring?*
+
+<!-- MM: clarify prior to question what q.4 is referring to, like causal effect of exposing people to spanish speakers on their attitudes toward immigration? -->
+
+*What would you expect the income to be for a random 40 year old?*
+
+*Among all people who have an income $100,000, what proportion are liberal?*
+
+*Assume we have a group of eight people, two of whom make $100,000, two $200,000, two $300,000 and two $400,000. How many will be liberal?*
+
+After determining the questions we would like to answer, we must then consider ideally what data we would have to do so and make our preceptor table. In other words, for each individual in the population, what information do we need to answer each question. Look at the first question. Upon first glance, it appears that to answer this, we would like to have the age and party affiliation of those in population, and the same holds true for the second question. Therefore, we would need to have the columns of age and party affiliation in our preceptor table. The third and fourth question, however, would require individuals being exposed to Spanish-speakers and the their attitudes on immigration before and after the fact, so in our preceptor table, we would need the columns of attitude on immigration before and after being exposed to Spanish-speakers. Lastly, the fourth question would require income and age for every individual in the population, and the fifth and sixth would require knowing whether an individual is liberal or not as well as their income, so we would also need columns with information on income and if someone is liberal or not. Therefore, our preceptor table would appear as the following:
+
+<!-- MM: Make sample Preceptor Table -->
+
+Now that we have determined the data we would ideally have to answer the above questions, we have to take a look at the data set we have. To demonstrate modeling with three parameters, we will use the `trains` data set from the **primer.data** package. 
+
+### EDA for `trains`
+
+*Always explore your data.* Recall the discussion from Chapter \@ref(rubin-causal-model). @enos2014 randomly placed Spanish-speaking confederates on nine train platforms around Boston, Massachusetts. Exposure to Spanish-speakers -- the `treatment` -- influenced attitudes toward immigration. These reactions were measured through changes in answers to three survey questions. Load the necessary libraries and look at the data.
+
+```{r, message=FALSE}
+library(primer.data)
+library(rstanarm)
+library(skimr)
+library(tidyverse)
+```
+
+```{r}
+glimpse(trains)
+```
+
+The data include information about each respondent's gender, political affiliations, age, income and so on. `treatment` indicates whether a subject was in the control or treatment group. The key outcomes are their attitudes toward immigration both before (`att_start`) and after (`att_end`) the experiment. We also have a measure of their ideology before and after the experiment, but there is little change. Type `?trains` to read the help page for more information about each variable. 
+
+Let's restrict attention to a subset of the variables by recalling the Preceptor table we made. By that, we can determine that the variables `age`, `party`, `liberal` and `income` are relevant to the questions we seek to answer. This is because `age` is the age of the respondent, `party` is their political party affiliation, `liberal` is whether they are liberal or not, and `income` is the income of the respondent. Additionally, since `treatment` tells us whether the respondent was given the treatment of being exposed to Spanish-speakers in the train station and `att_end` tell us about the respondent's attitude on immigration after the treatment, these are also variables of interest to us since they will be useful in answering some questions. 
+
+<!-- MM: Incorporate lines 103-130 here -->
 
 
 ## age ~ party
@@ -36,11 +80,7 @@ knitr::include_graphics("other/images/Wisdom.jpg")
 
 Wisdom begins with a look at your data.
 
-<<<<<<< HEAD
-<!-- MM: Discuss to Preceptor Tables and ideal data to answer our questions -->
-=======
 <!-- Discuss to Preceptor Tables and ideal data to answer our questions -->
->>>>>>> 1309821c2bb4b22469acfbdacca39c62fa6528a8
 
 #### EDA for `trains`
 
@@ -59,11 +99,7 @@ glimpse(trains)
 
 The data include information about each respondent's gender, political affiliations, age, income and so on. `treatment` indicates whether a subject was in the control or treatment group. The key outcomes are their attitudes toward immigration both before (`att_start`) and after (`att_end`) the experiment. We also have a measure of their ideology before and after the experiment, but there is little change. Type `?trains` to read the help page for more information about each variable. Let's restrict attention to a subset of the variables.
 
-<<<<<<< HEAD
-<!-- MM: Tie above paragraph to selecting data that is relevant to the research question -->
-=======
 <!-- Tie above paragraph to selecting data that is relevant to the research question. Think about increasing levels of sophistication in dealing with the "population" question, and discussing examples of what can go wrong. -->
->>>>>>> 1309821c2bb4b22469acfbdacca39c62fa6528a8
 
 ```{r}
 ch8 <- trains %>% 
@@ -115,17 +151,12 @@ The data that we have are very limited. There are only 115 observations, all fro
 
 The key concept is the idea of a "population." From which larger population is the data we have being (conceptually) drawn? If we were only interested in the age of individuals in our data set, we would have no need for inference. *We know everyone's ages already.* We only need tools like `stan_glm()` if we seek to understand individuals not in our data. Only if our data is "representative," at least to some extent, of that larger population can we use our data to answer our questions.
 
-<<<<<<< HEAD
-<!-- MM: Relate back to research questions and the population for them -->
 
-<!-- MM: Discuss whether the data comes from the same population as ideal preceptor table -->
-=======
 <!-- Relate back to research questions and the population for them -->
 
 <!-- Discuss whether the data comes from the same population as preceptor table -->
 
 <!-- This sections ends with the Population  Table. -->
->>>>>>> 1309821c2bb4b22469acfbdacca39c62fa6528a8
 
 
 
@@ -138,11 +169,7 @@ knitr::include_graphics("other/images/Justice.jpg")
 
 Justice, in data science, consists of three topics: predictive versus causal modeling, the Preceptor Table, and a mathematical formulation of the model. 
 
-<<<<<<< HEAD
-<!-- MM: ch.5 states key aspects are representativeness, validity, and data generating mechanism -->
-=======
 <!-- Ch.5 states key aspects are representativeness, validity, and data generating mechanism. Correct! This is all garbage! -->
->>>>>>> 1309821c2bb4b22469acfbdacca39c62fa6528a8
 
 
 Any model with age as its dependent variable will be predictive, not causal, for the simple reason that nothing, other than time, can change your age. You are X years old. It would not matter if you changed your party registration from Democrat to Republican or vice versa. Your age is your age.
