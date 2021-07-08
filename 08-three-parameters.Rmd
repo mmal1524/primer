@@ -1,7 +1,10 @@
 # Three Parameters {#three-parameters}
 
+<!-- Note: For the Preceptor Table and the Population Table, we are assuming no differences across questions. Not sure what group we want answer these questions for: Adults US citizens. Adult Massachusetts residents. Train commuters. Definitely for today.  -->
 
-<!-- Do Wisdom and Justice at the top. -->
+<!-- Do Wisdom at the top, end with Population Table.  -->
+
+<!-- Each new model starts with Justice, nodding toward the one true population table. Then discussion of representativeness and validity. -->
 
 <!-- DK: Where is the best place to modify income and discuss it? -->
 
@@ -15,6 +18,8 @@ Models have parameters. In Chapter \@ref(one-parameter) we created models with a
 
 Wisdom begins with considering the questions we desire to answer and the data set we are given.
 
+<!-- Add in that questions pertain to population of train commuters -->
+
 ### The Questions
 
 *What is the expected age of a Democrat at the train station?*
@@ -25,7 +30,7 @@ Wisdom begins with considering the questions we desire to answer and the data se
 
 *What is the largest causal effect which still has a 1 in 10 chance of occurring?*
 
-<!-- MM: clarify what question what q.4 is referring to, like causal effect of exposing people to spanish speakers on their attitudes toward immigration? -->
+<!-- Clairfy -->
 
 *What would you expect the income to be for a random 40 year old?*
 
@@ -35,7 +40,9 @@ Wisdom begins with considering the questions we desire to answer and the data se
 
 After determining the questions we would like to answer, we must then consider ideally what data we would have to do so and make our preceptor table. In other words, for each individual in the population, what information do we need to answer each question. Look at the first question. Upon first glance, it appears that to answer this, we would like to have the age and party affiliation of those in population, and the same holds true for the second question. Therefore, we would need to have the columns of age and party affiliation in our preceptor table. The third and fourth question, however, would require individuals being exposed to Spanish-speakers and the their attitudes on immigration before and after the fact, so in our preceptor table, we would need the columns of attitude on immigration before and after being exposed to Spanish-speakers. Lastly, the fourth question would require income and age for every individual in the population, and the fifth and sixth would require knowing whether an individual is liberal or not as well as their income, so we would also need columns with information on income and if someone is liberal or not. Therefore, our preceptor table would appear as the following:
 
-<!-- MM: Make sample Preceptor Table -->
+<!-- Make sample Preceptor Table. Need a column for all 6 (?) of the variables that are used in the four models. But need two columns for att_end, because it is the dependent variable in the only causal model, which means that there are two potential outcomes.  -->
+
+<!-- Recall: a Preceptor Table is the smallest possible table such that, if there is no missing data, all questions are easy to answer. -->
 
 Now that we have determined the data we would ideally have to answer the above questions, we have to take a look at the data set we have. To demonstrate modeling with three parameters, we will use the `trains` data set from the **primer.data** package. 
 
@@ -86,16 +93,19 @@ ch8 %>%
 
 `skim()` shows us what the different values of `treatment` are because it is a factor. Unfortunately, it does not do the same for character variables like `party`. The ranges for `age` and `att_end` seem reasonable. Recall that participants were asked three questions about immigration issues, each of which allowed for an answer indicated strength of agreement on a scale form 1 to 5, with higher values indicating more agreement with conservative viewpoints. `att_end` is the sum of the responses to the three questions, so the most liberal possible value is 3 and the most conservative is 15.
 
+By taking our first glance at the data in the above manners, we gain greater understanding of the data we have to work with and whether it will be capable of answering our questions. However, we can't make models and use the data for our analysis without also understanding the population that the data is from and whether it can be applied to the population we would like to work with.
+
+<!-- Conclude this section with discussion of the population issue. -->
+
 ### Population
 
-Now that 
-
-The data that we have are very limited. There are only 115 observations, all from 2012 and involving train commuters to Boston. How useful will this data be today, or for other populations around Boston, or for other cities in the US? Only your judgment, along with advice from your colleagues, can guide you.
+For the purpose of our questions, we seek to answer them for the general population of train commuters today. However, the data that we have are very limited. There are only 115 observations, all from 2012 and involving train commuters to Boston. How useful will this data be today, or for other populations around Boston, or for other cities in the US? Only your judgment, along with advice from your colleagues, can guide you.
 
 The key concept is the idea of a "population." From which larger population is the data we have being (conceptually) drawn? If we were only interested in the age of individuals in our data set, we would have no need for inference. *We know everyone's ages already.* We only need tools like `stan_glm()` if we seek to understand individuals not in our data. Only if our data is "representative," at least to some extent, of that larger population can we use our data to answer our questions.
 
 ## age ~ party
 
+No need to repeat the questions. You can make reference to them, and then just conclude that we are using party to model age.
 
 We want to build a model and then use that model to make claims about the world. 
 
@@ -258,8 +268,7 @@ $$\epsilon_i \sim N(0, \sigma^2)$$
 
 Don't panic dear poets and philosophers, the whole thing is easier than it looks.
 
-<!-- DK: This whole section is very awkward. Start with which is data and which is parameters. 
-     MM: Agree, found some parts of this a little difficult to follow -->
+<!-- This whole section is very awkward. Start with which is data and which is parameters. -->
 
 * On the left-hand side we have the outcome, $y_i$, which is the variable to be explained. In our case, this is the age of an individual in the population.
 
@@ -277,7 +286,7 @@ Don't panic dear poets and philosophers, the whole thing is easier than it looks
 
 * The model in Chapter \@ref(two-parameters) is sometimes called "intercept-only" because the only (interesting) parameter is the intercept. Here we have a "two intercept" model because, instead of estimating an average for the whole population, we are estimating two averages.
 
-<!-- MM: Reinforce representativeness and validity of the data -->
+<!-- Reinforce representativeness and validity of the data -->
 
 
 ### Courage
@@ -588,7 +597,6 @@ Models help us answer questions better than we could without those models, but o
 knitr::include_graphics("other/images/Wisdom.jpg")
 ```
 
-<!-- MM: ideal preceptor table, what kind of data would we need, then look at data? -->
 
 *Look at your data!* Before making a model which seeks to explain `att_end`, we should plot `att_end` and the variable we think is connected to it.
 
@@ -620,7 +628,7 @@ knitr::include_graphics("other/images/Justice.jpg")
 
 The two elements of Justice in a data science project remain the same: the Preceptor Table and the  mathematical formula.
 
-<!-- MM: should be three elements: representativeness, validity, and formula -->
+<!-- Three elements: representativeness, validity, and functional form (linear or logistic or something else) -->
 
 A Preceptor Table for this model would look very similar to the one in the first half of this chapter, except that we have now possible outcomes for each individual: `att_end` if they are exposed to treatment and `att_end` if they are exposed to control. 
 
@@ -739,9 +747,7 @@ outcome + fitted + res +
 
 The smaller the spread of the residuals, the better a job the model is doing of explaining the outcomes.
 
-<!-- DK: more details! -->
-
-<!-- MM: Add explanation of fit similar to how it was done previously? -->
+<!-- dd explanation of fit similar to how it was done previously. Can go faster, because we do not need to repeat everything.  -->
 
 ### Temperance
 
