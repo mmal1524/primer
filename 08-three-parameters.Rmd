@@ -25,7 +25,7 @@ Wisdom begins with considering the questions we desire to answer and the data se
 
 *What is the largest causal effect which still has a 1 in 10 chance of occurring?*
 
-<!-- MM: clarify prior to question what q.4 is referring to, like causal effect of exposing people to spanish speakers on their attitudes toward immigration? -->
+<!-- MM: clarify what question what q.4 is referring to, like causal effect of exposing people to spanish speakers on their attitudes toward immigration? -->
 
 *What would you expect the income to be for a random 40 year old?*
 
@@ -58,8 +58,41 @@ The data include information about each respondent's gender, political affiliati
 
 Let's restrict attention to a subset of the variables by recalling the Preceptor table we made. By that, we can determine that the variables `age`, `party`, `liberal` and `income` are relevant to the questions we seek to answer. This is because `age` is the age of the respondent, `party` is their political party affiliation, `liberal` is whether they are liberal or not, and `income` is the income of the respondent. Additionally, since `treatment` tells us whether the respondent was given the treatment of being exposed to Spanish-speakers in the train station and `att_end` tell us about the respondent's attitude on immigration after the treatment, these are also variables of interest to us since they will be useful in answering some questions. 
 
-<!-- MM: Incorporate lines 103-130 here -->
+```{r}
+ch8 <- trains %>% 
+  select(age, att_end, party, income, treatment, liberal)
+```
 
+It is always smart to look at a some random samples of the data:
+
+```{r}
+ch8 %>% 
+  slice_sample(n = 5)
+```
+
+`att_end` is a measure of person's attitude toward immigration. A higher number means more conservative, i.e., a more exclusionary stance toward immigration into the United States. 
+
+```{r}
+ch8 %>% 
+  glimpse()
+```
+
+Pay attention to the variable types. Do they make sense? Perhaps. But there are certainly grounds for suspicion. Why is  `att_end` a double rather than an integer? All the values in the data appear to be integers, so there is no benefit to having these variables be doubles. Why is `party` a character variable and `treatment` a factor variable? It could be that these are intentional choices made by the creator of the tibble, i.e., us. Or, these could be mistakes. Most likely, these choices are a mixture of sensible and arbitrary. Regardless, it is your responsibility to notice them. You can't make a good model without looking closely at the data which you are using.
+
+```{r}
+ch8 %>% 
+  skim()
+```
+
+`skim()` shows us what the different values of `treatment` are because it is a factor. Unfortunately, it does not do the same for character variables like `party`. The ranges for `age` and `att_end` seem reasonable. Recall that participants were asked three questions about immigration issues, each of which allowed for an answer indicated strength of agreement on a scale form 1 to 5, with higher values indicating more agreement with conservative viewpoints. `att_end` is the sum of the responses to the three questions, so the most liberal possible value is 3 and the most conservative is 15.
+
+### Population
+
+Now that 
+
+The data that we have are very limited. There are only 115 observations, all from 2012 and involving train commuters to Boston. How useful will this data be today, or for other populations around Boston, or for other cities in the US? Only your judgment, along with advice from your colleagues, can guide you.
+
+The key concept is the idea of a "population." From which larger population is the data we have being (conceptually) drawn? If we were only interested in the age of individuals in our data set, we would have no need for inference. *We know everyone's ages already.* We only need tools like `stan_glm()` if we seek to understand individuals not in our data. Only if our data is "representative," at least to some extent, of that larger population can we use our data to answer our questions.
 
 ## age ~ party
 
