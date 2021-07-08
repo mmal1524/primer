@@ -38,9 +38,45 @@ Wisdom begins with considering the questions we desire to answer and the data se
 
 *Assume we have a group of eight people, two of whom make $100,000, two $200,000, two $300,000 and two $400,000. How many will be liberal?*
 
-After determining the questions we would like to answer, we must then consider ideally what data we would have to do so and make our preceptor table. In other words, for each individual in the population, what information do we need to answer each question. Look at the first question. Upon first glance, it appears that to answer this, we would like to have the age and party affiliation of those in population, and the same holds true for the second question. Therefore, we would need to have the columns of age and party affiliation in our preceptor table. The third and fourth question, however, would require individuals being exposed to Spanish-speakers and the their attitudes on immigration before and after the fact, so in our preceptor table, we would need the columns of attitude on immigration before and after being exposed to Spanish-speakers. Lastly, the fourth question would require income and age for every individual in the population, and the fifth and sixth would require knowing whether an individual is liberal or not as well as their income, so we would also need columns with information on income and if someone is liberal or not. Therefore, our preceptor table would appear as the following:
+After determining the questions we would like to answer, we must then consider ideally what data we would have to do so and make our preceptor table. Recall: a Preceptor Table is the smallest possible table such that, if there is no missing data, all questions are easy to answer. In other words, for each individual in the population, what information do we need to answer each question. Look at the first question. Upon first glance, it appears that to answer this, we would like to have the age and party affiliation of those in population, and the same holds true for the second question. Therefore, we would need to have the columns of age and party affiliation in our preceptor table. 
+
+The third and fourth question, however, would require individuals being exposed to Spanish-speakers and the their attitudes on immigration before and after the fact, so in our preceptor table, we would need the columns of attitude on immigration before and after being exposed to Spanish-speakers. 
+
+Lastly, the fourth question would require income and age for every individual in the population, and the fifth and sixth would require knowing whether an individual is liberal or not as well as their income, so we would also need columns with information on income and if someone is liberal or not. Therefore, our preceptor table would appear as the following:
 
 <!-- Make sample Preceptor Table. Need a column for all 6 (?) of the variables that are used in the four models. But need two columns for att_end, because it is the dependent variable in the only causal model, which means that there are two potential outcomes.  -->
+
+```{r}
+library(gt)
+library(tidyverse)
+tibble(ID = c("Commuter 1", "Commuter 2", "...", "Commuter 1000", "Commuter 1001", "..."),
+       age = c("23", "18", "...", "49", "38", "..."),
+       party = c("Democrat", "Republican", "...", "Republican", "Democrat", "..."),
+       income = c("50000", "150000", "...", "100000", "200000", "..."),
+       liberal = c("Liberal", "Not Liberal", "...", "Liberal", "Liberal", "..."),
+       attitude_after_control = c("3", "7", "...", "4", "9", "..."),
+       attitude_after_treated = c("8", "7", "...", "8", "7", "...")
+       ) %>%
+  
+  # Then, we use the gt function to make it pretty
+  
+  gt() %>%
+  cols_label(ID = md("ID"),
+             age = md("Age"),
+             party = md("Party"),
+             income = md("Income"),
+             liberal = md("Liberal"),
+             attitude_after_control = md("Control Ending Attitude"),
+             attitude_after_treated = md("Treated Ending Attitude")) %>%
+  tab_style(cell_borders(sides = "right"),
+            location = cells_body(columns = c(ID))) %>%
+  tab_style(style = cell_text(align = "left", v_align = "middle", size = "large"), 
+            locations = cells_column_labels(columns = c(ID))) %>%
+  cols_align(align = "center", columns = everything()) %>%
+  cols_align(align = "left", columns = c(ID)) %>%
+  fmt_markdown(columns = everything())
+```
+
 
 <!-- Recall: a Preceptor Table is the smallest possible table such that, if there is no missing data, all questions are easy to answer. -->
 
@@ -99,9 +135,12 @@ By taking our first glance at the data in the above manners, we gain greater und
 
 ### Population
 
-For the purpose of our questions, we seek to answer them for the general population of train commuters today. However, the data that we have are very limited. There are only 115 observations, all from 2012 and involving train commuters to Boston. How useful will this data be today, or for other populations around Boston, or for other cities in the US? Only your judgment, along with advice from your colleagues, can guide you.
+The data that we have are very limited. There are only 115 observations, all from 2012 and involving train commuters to Boston. What me must ask ourselves is if this data can be applied to the population that we are answering our questions for. How useful will this data be today, or for other populations around Boston, or for other cities in the US? Only your judgment, along with advice from your colleagues, can guide you.
 
 The key concept is the idea of a "population." From which larger population is the data we have being (conceptually) drawn? If we were only interested in the age of individuals in our data set, we would have no need for inference. *We know everyone's ages already.* We only need tools like `stan_glm()` if we seek to understand individuals not in our data. Only if our data is "representative," at least to some extent, of that larger population can we use our data to answer our questions.
+
+For our current questions, the population we are answering questions for is the general population of train commuters today. However, the data we have involves train commuters around Boston in 2012. So, what we must ask ourselves is if this data from 2012 can be used to draw conclusions to our questions for a population for today. Additionally, we must also questions whether this data which is specific to the Boston Area can be applied to all train commuters. If we believe that the data is representative enough of today's population of train commuters, then we can continue with the process of answering our questions. We will assume that the data is drawn from the larger population of train commuters and that there isn't very much change overtime within this population so we can apply our data to the population of train commuters today.
+
 
 ## age ~ party
 
