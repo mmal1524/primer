@@ -46,6 +46,8 @@ Lastly, the fourth question would require income and age for every individual in
 
 <!-- Make sample Preceptor Table. Need a column for all 6 (?) of the variables that are used in the four models. But need two columns for att_end, because it is the dependent variable in the only causal model, which means that there are two potential outcomes.  -->
 
+<!-- MM: Slow down above explanation and discuss why ending attitude is needed for treatment and control groups -->
+
 ```{r}
 library(gt)
 library(tidyverse)
@@ -140,6 +142,69 @@ The data that we have are very limited. There are only 115 observations, all fro
 The key concept is the idea of a "population." From which larger population is the data we have being (conceptually) drawn? If we were only interested in the age of individuals in our data set, we would have no need for inference. *We know everyone's ages already.* We only need tools like `stan_glm()` if we seek to understand individuals not in our data. Only if our data is "representative," at least to some extent, of that larger population can we use our data to answer our questions.
 
 For our current questions, the population we are answering questions for is the general population of train commuters today. However, the data we have involves train commuters around Boston in 2012. So, what we must ask ourselves is if this data from 2012 can be used to draw conclusions to our questions for a population for today. Additionally, we must also questions whether this data which is specific to the Boston Area can be applied to all train commuters. If we believe that the data is representative enough of today's population of train commuters, then we can continue with the process of answering our questions. We will assume that the data is drawn from the larger population of train commuters and that there isn't very much change overtime within this population so we can apply our data to the population of train commuters today.
+
+### Population Table
+
+By determining that the data is drawn from the same population which we are analyzing, we can go on to produce a Population Table. 
+
+The Population Table shows rows from three sources: the **Preceptor Table**, the **actual data**, and the **population** (outside of the data).
+
+Our **Preceptor Table** rows contain the information that we would *want* to know in order to answer our questions. These rows contain entries for our covariates (city and year) but they do not contain any outcome results. We are trying to answer questions about the train commuter population in 2021, so our city entries for these rows will vary and our year entries of these rows will read "2021". 
+
+Our **actual data** rows contain the information that we *do* know. These rows contain entries for both our covariates *and* the outcomes. In this case, the actual data comes from a study conducted on train commuters around Boston, MA in 2012, so our city entries for these rows will read "Boston, MA" and our year entries of these rows will read "2012".
+
+Our **population** rows contain no data. These are subjects which fall under our desired population, but for which we have no data. As such, all rows are missing.
+
+The population table includes commuters from our Preceptor table with the information that we would ideally have to answer the questions and those from the data we have that is specific to Boston, MA. Additionally, the population table also includes the groups of people within our population that we don't have 
+
+```{r}
+tibble(source = c("Preceptor Table", "Preceptor Table", "Preceptor Table",  "...", "Data", "Data", "Data", "...", "Population", "Population", "Population"),
+       city = c("Chicago, IL", "Seattle, WA", "Atlanta, GA", "...",
+                  "Boston, MA", "Boston, MA", "Boston, MA", "...",
+                  "?", "?", "?"),
+       year = c("2021", "2021", "2021", "...",
+                "2012", "2012", "2012", "...",
+                "?", "?", "?"),
+       age = c("?", "?", "?", "...",
+                 "43", "52", "28", "...",
+                 "?", "?", "?"),
+       party = c("?", "?", "?", "...", 
+                  "Democrat", "Republican", "Republican", "...",
+                  "?", "?", "?"),
+       income = c("?", "?", "?", "...", 
+                    "150000", "50000", "200000", "...",
+                    "?", "?", "?"),
+       liberal = c("?", "?", "?", "...", 
+                 "Liberal", "Liberal", "Not Liberal", "...",
+                 "?", "?", "?"),
+       att_treat = c("?", "?", "?", "...", 
+                 "6", "8", "4", "...",
+                 "?", "?", "?"),
+       att_control = c("?", "?", "?", "...", 
+                 "4", "2", "5", "...",
+                 "?", "?", "?")) %>%
+  
+  # Then, we use the gt function to make it pretty
+  
+  gt() %>%
+  cols_label(source = md("Source"),
+             city = md("City"),
+             year = md("Year"),
+             age = md("Age"),
+             party = md("Party"),
+             income = md("Income"),
+             liberal = md("Liberal"),
+             att_treat = md("Treatment"),
+             att_control = md("Control")) %>%
+  tab_style(cell_borders(sides = "right"),
+            location = cells_body(columns = c(source))) %>%
+  tab_style(style = cell_text(align = "left", v_align = "middle", size = "large"), 
+            locations = cells_column_labels(columns = c(source))) %>%
+  cols_align(align = "center", columns = everything()) %>%
+  cols_align(align = "left", columns = c(source)) %>%
+  fmt_markdown(columns = everything())  
+```
+
 
 
 ## age ~ party
