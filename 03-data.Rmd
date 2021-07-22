@@ -10,7 +10,13 @@
 
 <!-- Any inspiration to be drawn from this: https://ubc-dsci.github.io/introduction-to-datascience/reading.html -->
 
-Anything useful here: https://ubc-dsci.github.io/introduction-to-datascience/reading.html
+<!-- Add these?  -->
+
+<!-- https://www.rstudio.com/resources/webinars/part-1-easy-ways-to-collect-different-types-of-data-from-the-web-with-r/ -->
+
+<!-- https://www.rstudio.com/resources/webinars/part-2-easy-ways-to-collect-different-types-of-data-from-the-web-with-r/ -->
+
+<!-- Anything useful here: https://ubc-dsci.github.io/introduction-to-datascience/reading.html -->
 
 <!-- Add Google sheets examples? -->
  
@@ -28,7 +34,7 @@ library(janitor)
 You can find most of the files that we use for this chapter [here](https://github.com/PPBDS/primer.tutorials/tree/master/inst/www). We can also access these files by saving the URL to R and then using it so that we can download and access the files located on the internet.
 
 ```{r}
-github_url <- "https://raw.githubusercontent.com/PPBDS/primer.tutorials/master/inst/www/"
+github_url <- "https://raw.githubusercontent.com/PPBDS/primer.tutorials/master/inst/tutorials/031-data-files/data/"
 ```
 
 ## Reading and writing files
@@ -45,7 +51,7 @@ In this section, we'll be going over the common file formats and how we can pull
 
 ### Text files
 
-The most common type of data text file is "CSV," which stands for *c*omma *s*eparated *v*alue. In other words, CSV files are files whose values are separated by commas. Each comma from the csv file corresponds to a column, and the column names are, by default, taken from the first line of the file.
+The most common type of data text file is "CSV," which stands for **c**omma **s**eparated **v**alue. In other words, CSV files are files whose values are separated by commas. Each comma from the csv file corresponds to a column, and the column names are, by default, taken from the first line of the file.
 
 CSV files (and their counterparts) are easily transferable between computers and programming languages and are extremely simple because they're effectively just text files that have a special format. Additionally, they're very easy to parse through small amounts of data because they're easily readable by humans and computers. 
 However, due to their simple nature, CSV files are only able to move basic data and only as text values. They also have poor support for special characters like commas, which can make the dataset harder to organize and understand by adding a new column for a few specific entries. This make CSV files good for sharing data between computers and languages, but not efficient for transporting or saving large amounts of data.
@@ -57,9 +63,7 @@ Here's an example of a CSV file and what it looks like. Use `read_csv()` from th
 ```{r}
 # We can access files either by using their URL or their file path. In this
 # case, we're using the GitHub URL to access the database. This is done by
-# pasting the file name into our URL using the paste0() command This does the
-# same thing as creating the URL below.
-# https://raw.githubusercontent.com/PPBDS/primer.tutorials/master/inst/www/test_1.csv
+# pasting the file name into our URL using the paste0() command.
 
 file_1 <- paste0(github_url, "test_1.csv")
 
@@ -207,7 +211,7 @@ As you can see, while the function does compile the names aren't easy to access.
 file_4_tibble$`one powers`
 ```
 
-But that can still cause problems down the line and it's just annoying to use the backticks every time you want a column name. This is when we can use the `clean_names()` function from the **janitor** package. It essentially formats the column names so that they follow the [underscore separated naming convention](https://en.wikipedia.org/wiki/Snake_case#:~:text=Snake%20case%20(stylized%20as%20snake_case,subroutine%20names%2C%20and%20for%20filenames.) and are all unique.
+But that can still cause problems down the line and it's just annoying to use the backticks every time you want a column name. This is when we can use the `clean_names()` function from the **janitor** package. It essentially formats the column names so that they follow the [underscore separated naming convention](https://en.wikipedia.org/wiki/Snake_case) and are all unique.
 
 ```{r}
 file_4_tibble %>% 
@@ -1507,8 +1511,6 @@ Information for this section on API's was taken from *Mastering Software Develop
 <!--   + [Building a blog with distill](https://themockup.blog/posts/2020-08-01-building-a-blog-with-distill/) by Thomas Mock.   -->
 <!--   + [Building a {distill} website](https://lisalendway.netlify.app/posts/2020-12-09-buildingdistill/) by Lisa Lendway.   -->
 <!--   + [Create a distill website](https://aosmith16.github.io/spring-r-topics/materials.html#week-2-create-a-distill-website) and [More on distill articles and deploy website](https://aosmith16.github.io/spring-r-topics/materials.html#week-3-more-on-distill-articles-and-deploy-website) by Ariel Muldoon. -->
-
-<!-- AG: I'm not creative enough to make a smooth segue so just putting in the information with a temporary transition until I think of one. -->
 
 <!-- Add one paragraph Distill section, including links, like from Bootcamp page. Point toward tutorial. -->
 

@@ -1,8 +1,6 @@
 # Three Parameters {#three-parameters}
 
-<!-- Note: For the Preceptor Table and the Population Table, we are assuming no differences across questions. Not sure what group we want answer these questions for: Adults US citizens. Adult Massachusetts residents. Train commuters. Definitely for today.  -->
-
-<!-- Do Wisdom at the top, end with Population Table.  -->
+<!-- Go through old MM comments and ensure which ones stay for next meeting. -->
 
 <!-- Each new model starts with Justice, nodding toward the one true population table. Then discussion of representativeness and validity. -->
 
@@ -38,7 +36,7 @@ Wisdom begins with considering the questions we desire to answer and the data se
 
 *Assume we have a group of eight train commuters in the U.S. today, two of whom make $100,000, two $200,000, two $300,000 and two $400,000. How many will be liberal?*
 
-After determining the questions we would like to answer, we must then consider ideally what data we would have to do so and make our Preceptor Table. Recall: a Preceptor Table is the smallest possible table such that, if there is no missing data, all questions are easy to answer. In other words, for each individual in the population, what information would we need to answer each question? In order to do so, first we must determine for each question whether the model will be predictive or causal. Recall from chapter 4, that a predictive model is a model that only has a single outcome column whereas a causal model would have at least two, such as a treatment column and control column. 
+After determining the questions we would like to answer, we must then consider ideally what data we would have to do so and make our Preceptor Table. Recall: a Preceptor Table is the smallest possible table such that, if there is no missing data, all questions are easy to answer. In other words, for each individual in the population, what columns would we need to answer each question? We must also determine for each question whether the model will be predictive or causal. Recall from chapter 4, that a predictive model is a model that only has a single outcome column whereas a causal model would have at least two, such as a treatment column and control column. 
 
 Look at the first question. Upon first glance, it appears that to answer this, we would like to have the age and party affiliation of those in population, with age being our outcome variable since it was we are looking to predict. The same holds true for the second question, since knowing the party and the ages of everyone in the population would allow us to create a distribution that compares a group of three Democrats to that of three Republicans. Therefore, we would need to have the columns of age and party affiliation in our Preceptor Table. 
 

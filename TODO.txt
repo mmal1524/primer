@@ -4,8 +4,8 @@
 ## Students
 
 Heather and Kevin -- chapter 1
-Ajay -- chapter 2
-Anmay -- chapter 3
+Ajay (data types), Atilla (plots) and Bryan (more plots)-- chapter 2
+Anmay and Shyamsai -- chapter 3
 Sophia and Arghayan -- chapter 4
 Yuhan -- chapter 5
 Ryan -- chapter 6
@@ -13,10 +13,12 @@ George -- chapter 7
 Mahima -- chapter 8
 Mak -- Chapter 10
 Nuo Wen -- technical issues
-Ahmet -- Python
-Shreeram -- hurricane
 
 # Topics
+
+* https://clauswilke.com/dataviz/
+
+`show_col_types = FALSE`, col_select also looks interesting. Also read_tsv("/tmp/flights_AA.tsv", name_repair = janitor::make_clean_names)
 
 * Output created: docs/index.html
 Warning message:
@@ -196,7 +198,6 @@ https://github.com/jonspring/discontinuity/blob/master/fileb23c55435f90.gif
 
 ## Other Items
 
-Github Actions: https://orchid00.github.io/actions_sandbox/
 
 Prediction checks.
 
