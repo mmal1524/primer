@@ -254,7 +254,13 @@ We can answer these and similar questions by creating a model that uses party af
 knitr::include_graphics("other/images/Justice.jpg")
 ```
 
-Justice, in data science, consists of three topics: predictive versus causal modeling, the Preceptor Table, and a mathematical formulation of the model. 
+Justice, in data science, consists of three topics: representativeness, validity, and the data-generating mechanism, or model. 
+
+Let's first consider the representativeness of the data. In order to determine if the data is representative, we must determine if we could treat the rows of the data as if they are random samples of the population table. In other words, we must determine if the data from 2012 in Boston is exchangeable with data from 2021 in the U.S.. 
+
+Additionally, we must determine if the data is valid. In other words, we must figure out if the meaning of the columns is the same over the entire population table. For `party`, this would mean considering if the meaning of aligning as a "Democrat" or "Republican" has changed over the years. 
+
+<!-- MM: Explain more in above two paragraphs -->
 
 <!-- Ch.5 states key aspects are representativeness, validity, and data generating mechanism. Correct! This is all garbage! -->
 
