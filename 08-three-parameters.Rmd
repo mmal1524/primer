@@ -22,35 +22,41 @@ Wisdom begins with considering the questions we desire to answer and the data se
 
 ### The Questions
 
-*What is the expected age of a Democrat at the train station?*
+*What is the expected age of a Democrat at a train station in the U.S. today?*
 
-*In a group of three Democrats and three Republicans, what will the age difference be between the oldest Democrat and the youngest Republican?* 
+*In a group of train commuters in the U.S. today with three Democrats and three Republicans, what will the age difference be between the oldest Democrat and the youngest Republican?* 
 
-*What is the average treatment effect, of exposing people to Spanish-speakers, on their attitudes toward immigration?* 
+*What is the average treatment effect, of exposing U.S. train commuters today to Spanish-speakers, on their attitudes toward immigration?* 
 
-*What is the largest causal effect which still has a 1 in 10 chance of occurring?*
+*What is the largest causal effect of exposing U.S. train commuters today which still has a 1 in 10 chance of occurring?*
 
 <!-- Clairfy -->
 
-*What would you expect the income to be for a random 40 year old?*
+*What would you expect the income to be for a random 40 year old train commuterf in the U.S. today?*
 
-*Among all people who have an income $100,000, what proportion are liberal?*
+*Among all train commuters in the U.S. today who have an income $100,000, what proportion are liberal?*
 
-*Assume we have a group of eight people, two of whom make $100,000, two $200,000, two $300,000 and two $400,000. How many will be liberal?*
+*Assume we have a group of eight train commuters in the U.S. today, two of whom make $100,000, two $200,000, two $300,000 and two $400,000. How many will be liberal?*
 
-After determining the questions we would like to answer, we must then consider ideally what data we would have to do so and make our preceptor table. Recall: a Preceptor Table is the smallest possible table such that, if there is no missing data, all questions are easy to answer. In other words, for each individual in the population, what information do we need to answer each question. Look at the first question. Upon first glance, it appears that to answer this, we would like to have the age and party affiliation of those in population, and the same holds true for the second question. Therefore, we would need to have the columns of age and party affiliation in our preceptor table. 
+After determining the questions we would like to answer, we must then consider ideally what data we would have to do so and make our Preceptor Table. Recall: a Preceptor Table is the smallest possible table such that, if there is no missing data, all questions are easy to answer. In other words, for each individual in the population, what information would we need to answer each question? In order to do so, first we must determine for each question whether the model will be predictive or causal. Recall from chapter 4, that a predictive model is a model that only has a single outcome column whereas a causal model would have at least two, such as a treatment column and control column. 
 
-The third and fourth question, however, would require individuals being exposed to Spanish-speakers and the their attitudes on immigration before and after the fact, so in our preceptor table, we would need the columns of attitude on immigration before and after being exposed to Spanish-speakers. 
+Look at the first question. Upon first glance, it appears that to answer this, we would like to have the age and party affiliation of those in population, with age being our outcome variable since it was we are looking to predict. The same holds true for the second question, since knowing the party and the ages of everyone in the population would allow us to create a distribution that compares a group of three Democrats to that of three Republicans. Therefore, we would need to have the columns of age and party affiliation in our Preceptor Table. 
 
-Lastly, the fourth question would require income and age for every individual in the population, and the fifth and sixth would require knowing whether an individual is liberal or not as well as their income, so we would also need columns with information on income and if someone is liberal or not. Therefore, our preceptor table would appear as the following:
+The third and fourth question, however, would require individuals being exposed to Spanish-speakers and the their attitudes on immigration before and after the fact, so in our Preceptor Table, we would need two columns of attitude on immigration: one for the treatment of being exposed and another for the control group.
+
+The fourth question would require income and age for every individual in the population. Lastly, the fifth and sixth would require knowing whether an individual is liberal or not as well as their income, so we would also need columns with information on income and if someone is liberal or not. Therefore, our Preceptor Table would appear as the following:
 
 <!-- Make sample Preceptor Table. Need a column for all 6 (?) of the variables that are used in the four models. But need two columns for att_end, because it is the dependent variable in the only causal model, which means that there are two potential outcomes.  -->
 
 <!-- MM: Slow down above explanation and discuss why ending attitude is needed for treatment and control groups -->
 
-```{r}
+```{r, echo = FALSE, message = FALSE}
 library(gt)
 library(tidyverse)
+```
+
+
+```{r, echo = FALSE}
 tibble(ID = c("Commuter 1", "Commuter 2", "...", "Commuter 1000", "Commuter 1001", "..."),
        age = c("23", "18", "...", "49", "38", "..."),
        party = c("Democrat", "Republican", "...", "Republican", "Democrat", "..."),
@@ -80,7 +86,7 @@ tibble(ID = c("Commuter 1", "Commuter 2", "...", "Commuter 1000", "Commuter 1001
 ```
 
 
-<!-- Recall: a Preceptor Table is the smallest possible table such that, if there is no missing data, all questions are easy to answer. -->
+<!-- Recall: a Preceptor Table is the smallest possible table such that, if there is no missing data, all questions are easy to answer. Done. -->
 
 Now that we have determined the data we would ideally have to answer the above questions, we have to take a look at the data set we have. To demonstrate modeling with three parameters, we will use the `trains` data set from the **primer.data** package. 
 
@@ -101,7 +107,7 @@ glimpse(trains)
 
 The data include information about each respondent's gender, political affiliations, age, income and so on. `treatment` indicates whether a subject was in the control or treatment group. The key outcomes are their attitudes toward immigration both before (`att_start`) and after (`att_end`) the experiment. We also have a measure of their ideology before and after the experiment, but there is little change. Type `?trains` to read the help page for more information about each variable. 
 
-Let's restrict attention to a subset of the variables by recalling the Preceptor table we made. By that, we can determine that the variables `age`, `party`, `liberal` and `income` are relevant to the questions we seek to answer. This is because `age` is the age of the respondent, `party` is their political party affiliation, `liberal` is whether they are liberal or not, and `income` is the income of the respondent. Additionally, since `treatment` tells us whether the respondent was given the treatment of being exposed to Spanish-speakers in the train station and `att_end` tell us about the respondent's attitude on immigration after the treatment, these are also variables of interest to us since they will be useful in answering some questions. 
+Let's restrict attention to a subset of the variables by recalling the Preceptor Table we made. By that, we can determine that the variables `age`, `party`, `liberal` and `income` are relevant to the questions we seek to answer. This is because `age` is the age of the respondent, `party` is their political party affiliation, `liberal` is whether they are liberal or not, and `income` is the income of the respondent. Additionally, since `treatment` tells us whether the respondent was given the treatment of being exposed to Spanish-speakers in the train station and `att_end` tell us about the respondent's attitude on immigration after the treatment, these are also variables of interest to us since they will be useful in answering some questions. 
 
 ```{r}
 ch8 <- trains %>% 
@@ -137,11 +143,11 @@ By taking our first glance at the data in the above manners, we gain greater und
 
 ### Population
 
-The data that we have are very limited. There are only 115 observations, all from 2012 and involving train commuters to Boston. What me must ask ourselves is if this data can be applied to the population that we are answering our questions for. How useful will this data be today, or for other populations around Boston, or for other cities in the US? Only your judgment, along with advice from your colleagues, can guide you.
+The data that we have are very limited. There are only 115 observations, all from 2012 and involving train commuters to Boston. What me must ask ourselves is if the data we have and the data in our Preceptor Table are drawn from the same population. We therefore must consider how useful this data will be today, or for other populations around Boston, or for other cities in the US. Only your judgment, along with advice from your colleagues, can guide you.
+
+For our current questions, the population we are answering questions for is the general population of train commuters today. However, the data we have involves train commuters in the Boston area in 2012. So, what we must ask ourselves is if this data from Boston in 2012 can be drawn from the same population as all train commuters in the U.S. today. If we believe that the data is representative enough of today's population of train commuters and this can be considered to be true, then we can continue with the process of answering our questions. We will assume that the data is drawn from the larger population of train commuters and that there isn't very much change overtime within this population so we can apply our data to the population of train commuters today.
 
 The key concept is the idea of a "population." From which larger population is the data we have being (conceptually) drawn? If we were only interested in the age of individuals in our data set, we would have no need for inference. *We know everyone's ages already.* We only need tools like `stan_glm()` if we seek to understand individuals not in our data. Only if our data is "representative," at least to some extent, of that larger population can we use our data to answer our questions.
-
-For our current questions, the population we are answering questions for is the general population of train commuters today. However, the data we have involves train commuters around Boston in 2012. So, what we must ask ourselves is if this data from 2012 can be used to draw conclusions to our questions for a population for today. Additionally, we must also questions whether this data which is specific to the Boston Area can be applied to all train commuters. If we believe that the data is representative enough of today's population of train commuters, then we can continue with the process of answering our questions. We will assume that the data is drawn from the larger population of train commuters and that there isn't very much change overtime within this population so we can apply our data to the population of train commuters today.
 
 ### Population Table
 
@@ -153,9 +159,9 @@ Our **Preceptor Table** rows contain the information that we would *want* to kno
 
 Our **actual data** rows contain the information that we *do* know. These rows contain entries for both our covariates *and* the outcomes. In this case, the actual data comes from a study conducted on train commuters around Boston, MA in 2012, so our city entries for these rows will read "Boston, MA" and our year entries of these rows will read "2012".
 
-Our **population** rows contain no data. These are subjects which fall under our desired population, but for which we have no data. As such, all rows are missing.
+Our **population** rows contain no data. These are subjects which fall under our desired population, but for which we have no data. As such, all rows are missing. However, this may include, for example, data from a range of years before and after 2012, since we considered little change overtime, so we would also consider this data to be representative and drawn from the larger population of train commuters in years near 2012.
 
-The population table includes commuters from our Preceptor table with the information that we would ideally have to answer the questions and those from the data we have that is specific to Boston, MA. Additionally, the population table also includes the groups of people within our population that we don't have 
+The population table includes commuters from our Preceptor Table with the information that we would ideally have to answer the questions and those from the data we have that is specific to Boston, MA. Additionally, the population table also includes the groups of people within our population that we don't have 
 
 ```{r}
 tibble(source = c("Preceptor Table", "Preceptor Table", "Preceptor Table",  "...", "Data", "Data", "Data", "...", "Population", "Population", "Population"),
@@ -209,7 +215,7 @@ tibble(source = c("Preceptor Table", "Preceptor Table", "Preceptor Table",  "...
 
 ## age ~ party
 
-No need to repeat the questions. You can make reference to them, and then just conclude that we are using party to model age.
+<!-- No need to repeat the questions. You can make reference to them, and then just conclude that we are using party to model age. -->
 
 We want to build a model and then use that model to make claims about the world. 
 
@@ -301,7 +307,7 @@ The key concept is the idea of a "population." From which larger population is t
 
 <!-- Relate back to research questions and the population for them -->
 
-<!-- Discuss whether the data comes from the same population as preceptor table -->
+<!-- Discuss whether the data comes from the same population as Preceptor Table -->
 
 <!-- This sections ends with the Population  Table. -->
 
@@ -738,7 +744,7 @@ A Preceptor Table for this model would look very similar to the one in the first
 
 <!-- DK: We need to add Preceptor Tables here and elsewhere. The below one is wrong because it does not show two potential outcomes.  Should use proper potential outcome notation, as introduced in chapter 4. -->
 
-<!-- MM: Agree: Preceptor tables need to be added here as well as in wisdom -->
+<!-- MM: Agree: Preceptor Tables need to be added here as well as in wisdom -->
 
 
 The math for this model is exactly the same as the math for the predictive model in the first part of this chapter, although we change the notation a bit for clarity.
@@ -977,7 +983,7 @@ knitr::include_graphics("other/images/Wisdom.jpg")
 
 Before making a model which seeks to explain `income`, we should plot it and the variable we think is connected to it.
 
-<!-- MM: Relate to ideal Preceptor tables -->
+<!-- MM: Relate to ideal Preceptor Tables -->
 
 ```{r}
 ch8 %>%
@@ -1150,7 +1156,7 @@ So far in this chapter, we have only considered *continuous* outcome variables. 
 
 ### Wisdom
 
-<!-- MM: Ideal preceptor table -->
+<!-- MM: Ideal Preceptor Table -->
 
 Look at our data.
 
