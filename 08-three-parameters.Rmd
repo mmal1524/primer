@@ -1044,7 +1044,13 @@ So far in this chapter, we have only considered *continuous* outcome variables. 
 
 ### Justice
 
-<!-- Add representativeness and validity -->
+Let's now consider Justice for our relationship between `liberal` and `income`.
+
+First, let's look at validity, especially pertaining to `liberal`. As we know, this column has the values "Liberal" and "Not Liberal" to convey the political ideology of the train commuters. What we must determine if the column `liberal` and therefore the meaning of being liberal is the same in Boston in 2012 and Boston in 2021. If we can determine these to be the same, then we can assume validity, and in this case, because the core beliefs of being liberal have not changed very much between 2012 and 2021, we can determine that the data is valid.
+
+Now, let's consider stability. To do so, we must look at the relationship between `liberal` and `income` and determine whether or not we believe that this relationship has changed between 2012 and 2021. With our knowledge of the world, do we have any reason to believe that this has changed? Well, we might want to take into consideration events like the Covid-19 pandemic that could have impacted this relationship to income, however we will consider our model to be stable.
+
+In our past three models, we have considered 3 possible issues that we could have with the representativeness of our model, such as the difference between Boston and other cities, problems with random sampling, and bias in those who respond, and we will now consider how in this survey there were surveys given before and after treatment, and some people may have filled out only one of the surveys. People who only filled out one of the surveys could affect the representativeness of the data because they could not be included in the data and if those who only filled out one survey tended to be liberal, then this would affect our data because it would underestimate the amount of liberals in the survey. This is something we must consider when looking at representativeness, since we could otherwise not determine if this data from train commuters in Boston in 2012 is representative enough of train commuters in the US now to continue using our data.
 
 Recall the discussion in Section \@ref(zero-one-outcomes) about the logistic regression model which we use whenever the outcome or dependent variable is binary/logical. The math is there, if you care about math. We don't, at least not too much. Reminder:
 
