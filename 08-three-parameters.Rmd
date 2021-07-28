@@ -888,9 +888,11 @@ Let's look at the validity of `age` and `income`. Recall that validity refers to
 
 Now, let's consider the stability of our model and if we believe that our relationship between age and income has changed between 2012 and now. We will consider this model to be stable.
 
-
-
 <!-- MM: Add explanation of why it may not be stable, but we think it's fine? -->
+
+Next, let's consider another issue that we may have with representativeness. What if we were now to assume that Boston train commuters are perfectly representative of US train commuters AND those who were approached to respond to the survey were also random? Even if this were true, we could still not assume representativeness because those who actually complete and submit the survey are not random. Instead of having more young people chosen to respond by those handing out surveys like we discussed in our last model, what if were to assume that when the surveys are handed out randomly, younger people tended to fill out and submit them more than those who are older? Well, this would still skew the age distribution and overestimate younger people in the population, and if younger people also tend to have a lower income than older people, this could also alter our answers to our current questions. 
+
+If we had reason to believe this is true, one way that we could fix this issue of representativeness is to alter our population to be train commuters in the US who would respond to the survey. In doing so, our population would then accommodate for the skewed age distribution under the assumption that younger individuals tend to respond to surveys at higher rates than older people.
 
 ```{r echo = FALSE, fig.cap = "Justice"}
 knitr::include_graphics("other/images/Justice.jpg")
