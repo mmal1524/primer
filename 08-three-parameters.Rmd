@@ -880,7 +880,17 @@ So far, we have only created models in which the predictor variable is discrete,
 
 ### Justice
 
-<!-- Add representativeness and validity -->
+Once again, in Justice, we must consider validity, stability, representativeness, and the data generating mechanism.
+
+<!-- MM: validity of income and age? -->
+
+Let's look at the validity of `age` and `income`. Recall that validity refers to whether or not we can consider the columns `age` and `income` to have the same meaning in our data set of 2012 Boston train commuters as opposed to that of our Preceptor Table. Since `age` doesn't really change meaning over time, and neither does `income`, we can consider the data to be valid.
+
+Now, let's consider the stability of our model and if we believe that our relationship between age and income has changed between 2012 and now. We will consider this model to be stable.
+
+
+
+<!-- MM: Add explanation of why it may not be stable, but we think it's fine? -->
 
 ```{r echo = FALSE, fig.cap = "Justice"}
 knitr::include_graphics("other/images/Justice.jpg")
