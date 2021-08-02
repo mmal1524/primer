@@ -261,15 +261,11 @@ Next, let's consider representativeness. In order to do so, we must determine if
 
 <!-- MM: kind of DGM should be discussing linear or logistic -->
 
-Now, let's consider the type of DGM. Any DGM with age as its dependent variable will be predictive, not causal, for the simple reason that nothing, other than time, can change your age. You are X years old. It would not matter if you changed your party registration from Democrat to Republican or vice versa. Your age is your age.
+Now let's discuss the kind of DGM we will be using. For our purposes, we will be choosing between linear or logistic, however, there are several different types of distributions which we will not be dealing with at the moment. Let's recall the difference between linear and logistic models, which is dependent upon the outcome variable. If the outcome variable is continuous, we will use the a linear model, and when the outcome variable is binary, or only has two options, we will use a logistic model. In this case, our outcome variable is age which is continous, so it is a linear model.
 
-There is only one potential outcome, i.e., one outcome. There is not a potential outcome if you are Democrat and a different potential outcome if you are a Republican.
-
-When dealing with a non-causal DGM, the focus is on predicting things. The underlying mechanism which connects age with party is less important than the brute statistical fact that there is a connection.  *Predictive models care little about causality.*
+We can also consider the type of DGM. Any DGM with age as its dependent variable will be predictive, not causal, for the simple reason that nothing, other than time, can change your age. You are X years old. It would not matter if you changed your party registration from Democrat to Republican or vice versa. Your age is your age. When dealing with a non-causal DGM, the focus is on predicting things. The underlying mechanism which connects age with party is less important than the brute statistical fact that there is a connection.  *Predictive models care little about causality.*
 
 <!-- Preceptor Tables should be laid out like the formula: outcome on left, predictors on right. -->
-
-
 
 A good way at looking at this is with a Preceptor Table, as seen below. Unlike the previous table in Chapter \@ref(two-parameters), we now have two columns in addition to ID.  Since our data does not include all Republicans and Democrats in the world, not every row is filled in. 
 
@@ -303,7 +299,7 @@ In words, any event depends on our explicitly described model as well as on infl
 
 <!-- Review concept of dummy variables in the context of the intercept model with categorical predictor. -->
 
-The mathematics:
+Let's make our DGM. The mathematics:
 
 $$ y_i = \beta_1 republican_i + \beta_2 democrat_i + \epsilon_i$$
 
@@ -312,17 +308,21 @@ $$republican_i, democrat_i \in \{0,1\}$$ \n
 $$republican_i +  democrat_i = 1$$ \n
 $$\epsilon_i \sim N(0, \sigma^2)$$   
 
-Don't panic dear poets and philosophers, the whole thing is easier than it looks.
+Don't panic dear poets and philosophers, the whole thing is easier than it looks. This will follow the form above in which the outcome is the result of what is in our model and not in our model.
 
 <!-- This whole section is very awkward. Start with which is data and which is parameters. -->
 
-* On the left-hand side we have the outcome, $y_i$, which is the variable to be explained. In our case, this is the age of an individual in the population.
+On the left-hand side we have the outcome, $y_i$, which is the variable to be explained. In our case, this is the age of an individual in the population.
 
-* On the right-hand side we first have the part contained in the model: two similar terms added together. Each term consists of a parameter and a data point. The betas are our two parameters: $\beta_1$ is the average age of Republicans in the population and $\beta_2$ is the average age of Democrats in the population.  $republican_i$ and $democrat_i$ are our explanatory variables and take the values 1 or 0. If person $i$ is a Republican we have $republican_i = 1$ and $democrat_i = 0$. If person $i$ is a Democrat we have $republican_i = 0$ and $democrat_i = 1$. In other words, their values are mutually exclusive -- if you are a Democrat, you cannot also be a Republican.
+The right-hand side contains two parts, that which is contained within the model, and that which isn't. 
+
+* First, we have the part contained in the model, which consists of the parameter and the data points. The betas are our two parameters: $\beta_1$ is the average age of Republicans in the population and $\beta_2$ is the average age of Democrats in the population.  $republican_i$ and $democrat_i$ are our explanatory variables and take the values 1 or 0. As shown in our model, $\beta_1 republican_i$ and $\beta_2 democrat_i$ are two similar terms which are added together to make our model and each term consists of a parameter and a data point. If person $i$ is a Republican we have $republican_i = 1$ and $democrat_i = 0$. If person $i$ is a Democrat we have $republican_i = 0$ and $democrat_i = 1$. In other words, their values are mutually exclusive -- if you are a Democrat, you cannot also be a Republican.
 
 <!-- "Connected to" is awkward here. -->
 
-* The last part, $\epsilon_i$ (“epsilon”), represents the unexplained part of the outcome and is called the error term. It is simply the difference between the outcome and our model predictions. This includes all factors that have an influence on someone's age but are not connected to party affiliation. We assume that this error follows a normal distribution with an expected value of 0 (meaning it is 0 on average).
+* The second part in the right-hand side, $\epsilon_i$ (“epsilon”), represents the unexplained part of the outcome and is called the error term. This includes all factors that have an influence on someone's age but are not related to party affiliation. In other words, $\epsilon_i$ is what influence age that is not factored into our model. We assume that this error follows a normal distribution with an expected value of 0 (meaning it is 0 on average) and it is simply the difference between the outcome and our model predictions. 
+
+Some things to note about our model: 
 
 * The small $i$'s are an index to number the observations. It is equivalent to the "ID" column in our Preceptor Table and simply states that the outcome for person $i$ is explained by the modeled and non-modeled factors for person $i$. 
 
@@ -331,11 +331,6 @@ Don't panic dear poets and philosophers, the whole thing is easier than it looks
 * Although terminology differs across academic fields, the most common term to describe a model like this is a "regression." We are "regressing" `age` on `party` in order to see if they are associated with each other. The formula above is a "regression formula", and the model is a "regression model." This terminology would also apply to our model of `height` in Chapter \@ref(two-parameters). 
 
 * The model in Chapter \@ref(two-parameters) is sometimes called "intercept-only" because the only (interesting) parameter is the intercept. Here we have a "two intercept" model because, instead of estimating an average for the whole population, we are estimating two averages.
-
-
-
-
-<!-- Reinforce representativeness and validity of the data -->
 
 
 ### Courage
@@ -352,6 +347,7 @@ To get posterior distributions for our three parameters, we will again use `stan
 ```{r}
 fit_1 <- stan_glm(age ~ party - 1, 
                     data = trains, 
+                    family = gaussian,
                     seed = 17,
                     refresh = 0)
 ```
@@ -359,6 +355,8 @@ fit_1 <- stan_glm(age ~ party - 1,
 * The variable before the tilde, `age`, is our outcome. 
 
 * The only explanatory variable is `party`. This variable has only two values, 'Democrat' and 'Republican'. 
+
+* Recall that our model is linear. Since we are using a linear model, the `family` we use will be `gaussian`.
 
 * We have also added `-1` at the end of the equation, indicating that we do not want an intercept, which would otherwise be added by default. 
 
@@ -672,8 +670,7 @@ $$\epsilon_i \sim N(0, \sigma^2)$$
 
 Nothing has changed, except for the meaning of the data items and the interpretations of the parameters. 
 
-
-* On the left-hand side we have the outcome, $y_i$, which is the variable to be explained. In our case, this is a person's attitude toward immigration after the experiment is complete.  $y_i$ takes on integer values between 3 and 15 inclusive.
+* On the left-hand side we still have the outcome, $y_i$, which is the variable to be explained. In our case, this is a person's attitude toward immigration after the experiment is complete.  $y_i$ takes on integer values between 3 and 15 inclusive.
 
 * On the right-hand side we first have the part contained in the model, consisting of two similar terms. The two terms stand for Treated and Control and work as follows. Each term consists of a parameter and a data point.  $\beta_1$ is the average attitude toward immigration for treated individuals --- those exposed to Spanish-speakers ---   in the population. $\beta_2$ is the average attitude toward immigration for control individuals --- those not exposed to Spanish-speakers ---  in the population. The $x$'s are our explanatory variables and take the values 1 or 0. If person $i$ is Treated, $treatment_i = 1$ and $control_i = 0$. If person $i$ is Control, $treatment_i = 0$ and $control_i = 1$. In other words, these are binary variables and are mutually exclusive -- if you are Treated, you cannot also be Control.
 
