@@ -656,6 +656,7 @@ Let's say that even though Boston is different from other US cities, we consider
 
 <!-- We need to add Preceptor Tables here and in Wisdom. The below one is wrong because it does not show two potential outcomes.  Should use proper potential outcome notation, as introduced in chapter 4. -->
 
+Now, let's determine whether our DGM will be linear or logistic. Since our outcome variable `att_end` is a continuous variable since it has a range of possible values, we will use a linear model. 
 
 The math for this model is exactly the same as the math for the predictive model in the first part of this chapter, although we change the notation a bit for clarity.
 
@@ -670,15 +671,15 @@ $$\epsilon_i \sim N(0, \sigma^2)$$
 
 Nothing has changed, except for the meaning of the data items and the interpretations of the parameters. 
 
-* On the left-hand side we still have the outcome, $y_i$, which is the variable to be explained. In our case, this is a person's attitude toward immigration after the experiment is complete.  $y_i$ takes on integer values between 3 and 15 inclusive.
+On the left-hand side we still have the outcome, $y_i$, however in this case, this is a person's attitude toward immigration after the experiment is complete.  $y_i$ takes on integer values between 3 and 15 inclusive.
 
-* On the right-hand side we first have the part contained in the model, consisting of two similar terms. The two terms stand for Treated and Control and work as follows. Each term consists of a parameter and a data point.  $\beta_1$ is the average attitude toward immigration for treated individuals --- those exposed to Spanish-speakers ---   in the population. $\beta_2$ is the average attitude toward immigration for control individuals --- those not exposed to Spanish-speakers ---  in the population. The $x$'s are our explanatory variables and take the values 1 or 0. If person $i$ is Treated, $treatment_i = 1$ and $control_i = 0$. If person $i$ is Control, $treatment_i = 0$ and $control_i = 1$. In other words, these are binary variables and are mutually exclusive -- if you are Treated, you cannot also be Control.
+On the right-hand side, the part contained in the model will consist of the terms $\beta_1 treatment_i$ and $\beta_2 control_i$. These two terms stand for Treated and Control and as before, each term consists of a parameter and a data point.  $\beta_1$ is the average attitude toward immigration for treated individuals --- those exposed to Spanish-speakers ---   in the population. $\beta_2$ is the average attitude toward immigration for control individuals --- those not exposed to Spanish-speakers ---  in the population.These are both our parameters. The $x$'s are our explanatory variables and take the values 1 or 0. If person $i$ is Treated, $treatment_i = 1$ and $control_i = 0$. If person $i$ is Control, $treatment_i = 0$ and $control_i = 1$. In other words, these are binary variables and are mutually exclusive -- if you are Treated, you cannot also be Control.
+
+The last part, $\epsilon_i$ (“epsilon”), represents the part that is not explained by our model and is called the error term. It is simply the difference between the outcome and our model predictions. In our particular case, this includes all factors that have an influence on someone's attitude toward immigration but are not explained by treatment status. We assume that this error follows a normal distribution with an expected value of 0.
 
 * Note that the formula applies to everyone in the population, not just the 115 people for whom we have data. The index $i$ does not just go from 1 through 115. It goes from 1 through $N$, where $N$ is the number of individuals in the population. Conceptually, everyone has an `att_end` under treatment and under control. 
 
 <!-- DK: Above is not overly clear. -->
-
-* The last part, $\epsilon_i$ (“epsilon”), represents the unexplained part and is called the error term. It is simply the difference between the outcome and our model predictions. In our particular case, this includes all factors that have an influence on someone's attitude toward immigration but are not explained by treatment status. We assume that this error follows a normal distribution with an expected value of 0.
 
 * The small $i$'s are an index for the data set. It is equivalent to the "ID" column in our Preceptor Table and simply states that the outcome for person $i$ is explained by the predictor variables ($treatment$ and $control$) for person $i$, along with an error term. 
 
@@ -699,6 +700,8 @@ fit_2 <- stan_glm(att_end ~ treatment - 1,
 
 fit_2
 ```
+
+Note that once again, since we are using a linear model, we set the `family` argument to "gaussian".
 
 `treatmentTreated` corresponds to $\beta_1$. As always, R has, behind the scenes, estimated the entire posterior probability distribution for $\beta_1$. We will graph that distribution in the next section. But the basic print method for these objects can't show the entire distribution, so it gives us summary numbers: the median and the MAD SD. Speaking roughly, we would expect about 95% of the values in the posterior to be within two MAD SD's of the median. In other words, we are 95% confident that the true, but unknowable, average attitude toward immigration among the Treated in the population to be between 9.2 and 10.8. 
 
